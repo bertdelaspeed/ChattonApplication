@@ -3,20 +3,39 @@ import {
   Text,
   Image,
   TextInput,
-  Button,
   TouchableOpacity,
+  Alert,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { auth } from "../../ConfigurationFirebase/config";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
+import { AuthenticatedUserContext } from "../../Context/AuthenticationContext";
+
 const backImage = require("../../assets/background_signin.jpg");
 
 const LoginScreen = () => {
+  const { user } = useContext(AuthenticatedUserContext);
+
+  const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // console.log("password = ", password);
+  console.log("user = ", user);
+
+  const HandleLogin = () => {
+    if (email !== "" && password !== "") {
+      signInWithEmailAndPassword(auth, email, password)
+        .then(navigation.navigate("Home"))
+        .catch((error) => {
+          Alert.alert("error", error.message);
+        });
+    }
+  };
 
   return (
-    <View className="bg-black">
+    <KeyboardAwareScrollView className="bg-black">
       <View>
         <Image source={backImage} className="object-cover h-80 w-full" />
       </View>
@@ -45,19 +64,22 @@ const LoginScreen = () => {
             onChangeText={(text) => setPassword(text)}
           />
         </View>
-        <TouchableOpacity className="bg-[#fac25a] py-2 rounded-md mx-10 mt-10 mb-3">
+        <TouchableOpacity
+          onPress={HandleLogin}
+          className="bg-[#fac25a] py-2 rounded-md mx-10 mt-10 mb-3"
+        >
           <Text className="text-center font-semibold text-white text-lg">
             Se connecter
           </Text>
         </TouchableOpacity>
         <View className="flex-row space-x-2 justify-center">
           <Text className="font-light tracking-wider">Nouveau ici ?</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("Register")}>
             <Text className="font-medium text-[#d60e45]">Register</Text>
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </KeyboardAwareScrollView>
   );
 };
 
