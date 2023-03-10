@@ -11,23 +11,20 @@ import { useNavigation } from "@react-navigation/native";
 import { auth } from "../../ConfigurationFirebase/config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
-import { AuthenticatedUserContext } from "../../Context/AuthenticationContext";
 
 const backImage = require("../../assets/background_signin.jpg");
 
 const LoginScreen = () => {
-  const { user } = useContext(AuthenticatedUserContext);
-
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  console.log("user = ", user);
+  // console.log("user = ", user);
 
   const HandleLogin = () => {
     if (email !== "" && password !== "") {
       signInWithEmailAndPassword(auth, email, password)
-        .then(navigation.navigate("Home"))
+        .then(() => navigation.navigate("Home"))
         .catch((error) => {
           Alert.alert("error", error.message);
         });

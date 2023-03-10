@@ -26,7 +26,7 @@ const RegisterScreen = () => {
         return;
       } else {
         createUserWithEmailAndPassword(auth, email, password)
-          .then(Alert.alert("Info", "Compte cree avec succes"))
+          .then(() => Alert.alert("Info", "Compte cree avec succes"))
           .catch((error) => {
             Alert.alert("error", error.message);
           });
