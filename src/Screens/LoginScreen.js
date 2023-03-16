@@ -2,9 +2,9 @@ import {
   View,
   Text,
   Image,
-  TextInput,
   TouchableOpacity,
   Alert,
+  TextInput,
 } from "react-native";
 import React, { useContext, useState } from "react";
 import { useNavigation } from "@react-navigation/native";

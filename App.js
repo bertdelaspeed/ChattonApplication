@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { Text, View } from "react-native";
+import { Image, Text, View } from "react-native";
 import LoginScreen from "./src/Screens/LoginScreen";
 import RegisterScreen from "./src/Screens/RegisterScreen";
 import { NavigationContainer } from "@react-navigation/native";
@@ -8,10 +8,11 @@ import HomeScreen from "./src/Screens/HomeScreen";
 import AuthenticatedUserProvider, {
   AuthenticatedUserContext,
 } from "./Context/AuthenticationContext";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./ConfigurationFirebase/config";
 import ProfileScreen from "./src/Screens/ProfileScreen";
+const loadingGif = require("./assets/loading.gif");
 
 const Stack = createNativeStackNavigator();
 
@@ -43,11 +44,16 @@ function MainStack() {
 
 function RootNavigator() {
   const { user, setUser } = useContext(AuthenticatedUserContext);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
+        setIsLoading(false);
+        // ...
+      } else {
+        setIsLoading(false);
       }
     });
   }, []);
@@ -56,7 +62,13 @@ function RootNavigator() {
 
   return (
     <NavigationContainer>
-      {user ? <MainStack /> : <AuthStack />}
+      {isLoading === true && !user ? (
+        <Image source={loadingGif} className="h-full w-full" />
+      ) : isLoading === false && !user ? (
+        <AuthStack />
+      ) : (
+        <MainStack />
+      )}
     </NavigationContainer>
   );
 }

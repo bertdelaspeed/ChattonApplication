@@ -8,9 +8,10 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { auth } from "../../ConfigurationFirebase/config";
+import { auth, db } from "../../ConfigurationFirebase/config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
+import { addDoc, collection } from "firebase/firestore";
 const backImage = require("../../assets/background_signup.jpg");
 
 const RegisterScreen = () => {
@@ -26,7 +27,14 @@ const RegisterScreen = () => {
         return;
       } else {
         createUserWithEmailAndPassword(auth, email, password)
-          .then(() => Alert.alert("Info", "Compte cree avec succes"))
+          .then(
+            async (res) =>
+              await addDoc(collection(db, "Users"), {
+                userId: res.user.uid,
+                email: res.user.email,
+                username: res.user.email.split("@")[0],
+              })
+          )
           .catch((error) => {
             Alert.alert("error", error.message);
           });
