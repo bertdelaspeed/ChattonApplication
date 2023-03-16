@@ -12,6 +12,7 @@ import { useContext, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./ConfigurationFirebase/config";
 import ProfileScreen from "./src/Screens/ProfileScreen";
+import SearchScreen from "./src/Screens/SearchScreen";
 const loadingGif = require("./assets/loading.gif");
 
 const Stack = createNativeStackNavigator();
@@ -38,6 +39,11 @@ function MainStack() {
         component={HomeScreen}
       />
       <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen
+        name="Search"
+        component={SearchScreen}
+        options={{ title: "Rechercher" }}
+      />
     </Stack.Navigator>
   );
 }

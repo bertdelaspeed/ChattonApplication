@@ -5,16 +5,30 @@ import { auth, db } from "../../ConfigurationFirebase/config";
 import { AuthenticatedUserContext } from "../../Context/AuthenticationContext";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import * as ImagePicker from "expo-image-picker";
+import { Image } from "react-native";
+import { ActivityIndicator } from "react-native";
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
-  const { setUser, user } = useContext(AuthenticatedUserContext);
+  const storage = getStorage();
+
+  const { setUser, user, setUserAvatarUrl } = useContext(
+    AuthenticatedUserContext
+  );
   const [username, setUsername] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [image, setImage] = useState(null);
+  const [userImageUrl, setUserImageUrl] = useState(null);
 
   const UserRef = collection(db, "Users");
   const queryResult = query(UserRef, where("email", "==", user.email));
@@ -23,9 +37,11 @@ const ProfileScreen = () => {
     const querySnapshot = await getDocs(queryResult);
     querySnapshot.forEach((doc) => {
       if (userEmail === "") {
-        const { email, username } = doc.data();
+        const { email, username, profilePic } = doc.data();
         setUserEmail(email);
         setUsername(username);
+        setUserAvatarUrl(profilePic);
+        setUserImageUrl(profilePic);
       }
     });
   }
@@ -44,26 +60,36 @@ const ProfileScreen = () => {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
       uploadImage(result.assets[0].uri);
     }
   };
 
-
   const uploadImage = async (image) => {
     try {
-      setIsLoading(true)
-      const response = await fetch(image)
-      const blob = await response.blob()
-      const filename = image.substring(image.lastIndexOf('/'))
-      const imageRef = ref(storage, `ProfilePictures`)
+      setIsLoading(true);
+      const response = await fetch(image);
+      const blob = await response.blob();
+      const filename = image.substring(image.lastIndexOf("/"));
+      const imageRef = ref(storage, `ProfilePictures/${filename}`);
+      uploadBytes(imageRef, blob).then(async () => {
+        const downloadUrl = await getDownloadURL(imageRef);
+
+        const querySnapshot = await getDocs(queryResult);
+        querySnapshot.forEach(async (document) => {
+          await updateDoc(doc(db, "Users", document.id), {
+            profilePic: downloadUrl,
+          }).then(() => {
+            setUserImageUrl(downloadUrl), setUserAvatarUrl(downloadUrl);
+            setIsLoading(false);
+          });
+        });
+      });
     } catch (error) {
-      Alert.alert('error', error.message)
-      setIsLoading(false)
+      Alert.alert("error", error.message);
+      setIsLoading(false);
     }
-  }
+  };
 
   const Deconnexion = () => {
     signOut(auth)
@@ -83,8 +109,20 @@ const ProfileScreen = () => {
         </Text>
       </View>
 
-      <TouchableOpacity className=" rounded-md bg-gray-400 items-center justify-center mx-10 mb-10">
-        <Ionicons name="camera" size={50} color="white" />
+      <TouchableOpacity
+        onPress={pickImage}
+        className=" rounded-md bg-gray-400 items-center justify-center mx-10 mb-10"
+      >
+        {userImageUrl === undefined ? (
+          <Ionicons name="camera" size={50} color="white" />
+        ) : isLoading ? (
+          <ActivityIndicator size="large" color="white" />
+        ) : (
+          <Image
+            source={{ uri: userImageUrl }}
+            className="w-full h-40 rounded-md"
+          />
+        )}
       </TouchableOpacity>
 
       <View className="items-center">

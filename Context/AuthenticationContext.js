@@ -4,8 +4,11 @@ export const AuthenticatedUserContext = createContext();
 
 const AuthenticatedUserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [userAvatarUrl, setUserAvatarUrl] = useState(null);
   return (
-    <AuthenticatedUserContext.Provider value={{ user, setUser }}>
+    <AuthenticatedUserContext.Provider
+      value={{ user, setUser, userAvatarUrl, setUserAvatarUrl }}
+    >
       {children}
     </AuthenticatedUserContext.Provider>
   );
