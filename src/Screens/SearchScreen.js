@@ -11,8 +11,11 @@ import { FlatList } from "react-native";
 import { Image } from "react-native";
 const userAvatar = require("../../assets/man.png");
 const ecureuil = require("../../assets/squirrel-no-bg.png");
+import { useNavigation } from "@react-navigation/native";
 
 const SearchScreen = () => {
+  const navigation = useNavigation();
+
   const [searchFriend, setSearchFriend] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [found, setFound] = useState(false);
@@ -51,6 +54,7 @@ const SearchScreen = () => {
     <View className="bg-gray-200 flex-1">
       <View className="flex-row items-center my-3 mx-3 mb-5">
         <TextInput
+          onSubmitEditing={HandleSearch}
           className="tracking-widest bg-gray-100 rounded-lg  text-base py-2 px-1 mx-2 w-[85%]"
           placeholder="Rechercher un utilisateur"
           autoCapitalize="none"
@@ -76,7 +80,14 @@ const SearchScreen = () => {
             // showsVerticalScrollIndicator={false}
             keyExtractor={(item) => item.username}
             renderItem={({ item }) => (
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("Chat", {
+                    friendName: item.username,
+                    friendAvatar: item.profilePic,
+                  })
+                }
+              >
                 <View className="flex-row items-center space-x-4 bg-gray-100 px-2 py-2 rounded-lg">
                   {item.profilePic !== undefined ? (
                     <Image

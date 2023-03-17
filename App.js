@@ -13,6 +13,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./ConfigurationFirebase/config";
 import ProfileScreen from "./src/Screens/ProfileScreen";
 import SearchScreen from "./src/Screens/SearchScreen";
+import ChatScreen from "./src/Screens/ChatScreen";
 const loadingGif = require("./assets/loading.gif");
 
 const Stack = createNativeStackNavigator();
@@ -43,6 +44,11 @@ function MainStack() {
         name="Search"
         component={SearchScreen}
         options={{ title: "Rechercher" }}
+      />
+      <Stack.Screen
+        name="Chat"
+        component={ChatScreen}
+        options={{ title: "" }}
       />
     </Stack.Navigator>
   );
