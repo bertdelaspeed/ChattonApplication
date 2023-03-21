@@ -70,7 +70,7 @@ function RootNavigator() {
     });
   }, []);
 
-  console.log("user = ", user);
+  // console.log("user = ", user);
 
   return (
     <NavigationContainer>

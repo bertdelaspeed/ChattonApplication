@@ -1,5 +1,11 @@
 import { View, Text } from "react-native";
-import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native";
 import { Image } from "react-native";
@@ -20,6 +26,8 @@ import {
   where,
 } from "firebase/firestore";
 import { chatRef, db } from "../../ConfigurationFirebase/config";
+import { KeyboardAwareFlatList } from "react-native-keyboard-aware-scroll-view";
+import MessageItem from "../Component/MessageItem";
 
 const ChatScreen = () => {
   const route = useRoute();
@@ -29,6 +37,7 @@ const ChatScreen = () => {
   const sender = user.email.split("@")[0];
   const [message, setMessage] = useState("");
   const [allMessages, setAllMessages] = useState([]);
+  const flatListRef = useRef(null);
 
   const queryResult = query(
     chatRef,
@@ -139,12 +148,26 @@ const ChatScreen = () => {
         ],
       });
     }
+    setMessage("");
   };
 
   return (
     <View className="flex-1">
       {allMessages[0] !== undefined && (
-        <View>{/* <KeyboardAwareFlatList /> */}</View>
+        <View className="flex-1">
+          <KeyboardAwareFlatList
+            ref={flatListRef}
+            onContentSizeChange={() =>
+              flatListRef?.current?.scrollToEnd({ animated: true })
+            }
+            data={allMessages[0]}
+            initialNumTorRender={10}
+            keyExtractor={(item) => item.timestamp}
+            renderItem={({ item }) => (
+              <MessageItem item={item} sender={sender} />
+            )}
+          />
+        </View>
       )}
       <View className="flex-row">
         <TextInput
