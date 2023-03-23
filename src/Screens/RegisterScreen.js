@@ -12,6 +12,7 @@ import { auth, db } from "../../ConfigurationFirebase/config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 import { addDoc, collection } from "firebase/firestore";
+import { processAuthError } from "../Utils";
 const backImage = require("../../assets/background_signup.jpg");
 
 const RegisterScreen = () => {
@@ -36,7 +37,7 @@ const RegisterScreen = () => {
               })
           )
           .catch((error) => {
-            Alert.alert("error", error.message);
+            processAuthError(error);
           });
       }
     }

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "62399314890",
+    "project_id": "chattons-4614d",
+    "storage_bucket": "chattons-4614d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:62399314890:android:d4f065b612bf0aed49ad33",
+        "android_client_info": {
+          "package_name": "com.resusoft.chattons"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "62399314890-3kjd9m2ng7mdenlsh665at4mfcngtmvt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMjJiC7oW2qo0S3398ibYeSTgXf7iNoH4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "62399314890-3kjd9m2ng7mdenlsh665at4mfcngtmvt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

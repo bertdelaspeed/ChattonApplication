@@ -32,7 +32,7 @@ import MessageItem from "../Component/MessageItem";
 const ChatScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
-  const { friendName, friendAvatar } = route.params;
+  const { friendName, friendAvatar, friendEmail } = route.params;
   const { user } = useContext(AuthenticatedUserContext);
   const sender = user.email.split("@")[0];
   const [message, setMessage] = useState("");
@@ -148,6 +148,31 @@ const ChatScreen = () => {
         ],
       });
     }
+
+    async function RetryRequest(maxRetries = 3) {
+      let retries = 0;
+      while (retries < maxRetries) {
+        try {
+          const response = axios.post(
+            `https://app.nativenotify.com/api/indie/notification`,
+            {
+              subID: `${friendEmail}`,
+              appId: 6887,
+              appToken: "mcb8UbHtYmKsvGClKWjJHY",
+              title: `Nouveau Message de : ${sender} - Chat-ON`,
+              message: `${message}`,
+            }
+          );
+          console.log("Notification effectué avec succès");
+          return response;
+        } catch (error) {
+          console.log("request failed, retrying ...");
+          retries++;
+        }
+      }
+    }
+
+    RetryRequest();
     setMessage("");
   };
 
@@ -171,7 +196,7 @@ const ChatScreen = () => {
       )}
       <View className="flex-row">
         <TextInput
-          className="tracking-widest bg-white rounded-lg w-80 text-base py-2 px-1 mx-5 mb-5"
+          className="tracking-widest bg-white rounded-lg w-[80%] text-base py-2 px-1 mx-3 mb-5"
           placeholder="ecrire message ici ..."
           multiline={true}
           keyboardType="default"

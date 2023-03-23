@@ -39,8 +39,8 @@ const SearchScreen = () => {
       if (!querySnapshot.empty) {
         let friends = [];
         querySnapshot.forEach((document) => {
-          const { profilePic, username } = document.data();
-          friends.push({ profilePic, username });
+          const { profilePic, username, email } = document.data();
+          friends.push({ profilePic, username, email });
         });
         setSearchedFriendName(friends);
         setFound(true);
@@ -85,6 +85,7 @@ const SearchScreen = () => {
                   navigation.replace("Chat", {
                     friendName: item.username,
                     friendAvatar: item.profilePic,
+                    friendEmail: item.email,
                   })
                 }
               >

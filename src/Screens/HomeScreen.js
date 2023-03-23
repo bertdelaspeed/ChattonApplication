@@ -52,7 +52,7 @@ const HomeScreen = () => {
         </TouchableOpacity>
       ),
     });
-  }, []);
+  }, [userAvatarUrl]);
 
   useEffect(() => {
     if (!user) return;
@@ -175,10 +175,6 @@ const HomeScreen = () => {
 
   const sortedLastMessage = lastMessage.sort();
   const combData = combineData(friendAvatar, sortedLastMessage);
-
-  console.log("friends = ", friends);
-  console.log("friend avatar = ", friendAvatar);
-  console.log("sorted last message = ", JSON.stringify(sortedLastMessage));
 
   return (
     <>

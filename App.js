@@ -1,5 +1,4 @@
-import { StatusBar } from "expo-status-bar";
-import { Image, Text, View } from "react-native";
+import { Image, StatusBar, Text, View } from "react-native";
 import LoginScreen from "./src/Screens/LoginScreen";
 import RegisterScreen from "./src/Screens/RegisterScreen";
 import { NavigationContainer } from "@react-navigation/native";
@@ -89,6 +88,7 @@ export default function App() {
   return (
     <AuthenticatedUserProvider>
       <RootNavigator />
+      <StatusBar barStyle={"default"} />
     </AuthenticatedUserProvider>
   );
 }
