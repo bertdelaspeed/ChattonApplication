@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
-import React from "react";
+import React, { memo } from "react";
 
-const MessageItem = ({ item, sender }) => {
+const MessageItem = memo(({ item, sender }) => {
   return (
     <View
       className={`flex-row ${
@@ -18,6 +18,6 @@ const MessageItem = ({ item, sender }) => {
       </View>
     </View>
   );
-};
+});
 
 export default MessageItem;

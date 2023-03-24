@@ -13,7 +13,6 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 import { processAuthError } from "../Utils";
 import { registerIndieID } from "native-notify";
-import axios from "axios";
 
 const backImage = require("../../assets/background_signin.jpg");
 

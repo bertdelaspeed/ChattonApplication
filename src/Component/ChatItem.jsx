@@ -28,7 +28,7 @@ const ChatItem = ({ navigation, friend }) => {
             {friend.name}
           </Text>
           <Text className="text-gray-500 text-sm tracking-tight max-h-7">
-            {friend.lastMessage[0].message}
+            {friend.lastMessage[0]?.message}
           </Text>
         </View>
       </View>

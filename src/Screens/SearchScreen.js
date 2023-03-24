@@ -31,7 +31,7 @@ const SearchScreen = () => {
       const queryResult = query(
         UserRef,
         where("username", ">=", searchFriend.trim()),
-        where("username", "<=", searchFriend.trim(), "\uf8ff")
+        where("username", "<=", searchFriend.trim() + "\uf8ff")
       );
 
       const querySnapshot = await getDocs(queryResult);

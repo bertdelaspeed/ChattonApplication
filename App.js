@@ -88,7 +88,7 @@ export default function App() {
   return (
     <AuthenticatedUserProvider>
       <RootNavigator />
-      <StatusBar barStyle={"default"} />
+      <StatusBar barStyle={"dark-content"} />
     </AuthenticatedUserProvider>
   );
 }

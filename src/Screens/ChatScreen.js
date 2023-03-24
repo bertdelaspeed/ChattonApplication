@@ -28,6 +28,7 @@ import {
 import { chatRef, db } from "../../ConfigurationFirebase/config";
 import { KeyboardAwareFlatList } from "react-native-keyboard-aware-scroll-view";
 import MessageItem from "../Component/MessageItem";
+import axios from "axios";
 
 const ChatScreen = () => {
   const route = useRoute();
@@ -153,20 +154,20 @@ const ChatScreen = () => {
       let retries = 0;
       while (retries < maxRetries) {
         try {
-          const response = axios.post(
+          const response = await axios.post(
             `https://app.nativenotify.com/api/indie/notification`,
             {
               subID: `${friendEmail}`,
               appId: 6887,
               appToken: "mcb8UbHtYmKsvGClKWjJHY",
-              title: `Nouveau Message de : ${sender} - Chat-ON`,
+              title: `${sender} - Chat-ON`,
               message: `${message}`,
             }
           );
-          console.log("Notification effectué avec succès");
+          // console.log("Notification effectué avec succès");
           return response;
         } catch (error) {
-          console.log("request failed, retrying ...");
+          // console.log("request failed, retrying ...");
           retries++;
         }
       }
